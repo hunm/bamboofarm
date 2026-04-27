@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bambu Farm Manager</title>
+    <meta name="description"
+        content="Centralized management dashboard for Bambu Lab 3D printer farm — monitor status, queue jobs, and watch live camera feeds.">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/style.css?v=9">
 </head>
+
 <body>
     <div class="app-container">
         <header class="glass-panel">
             <h1>Bambu Farm <span>Manager</span></h1>
             <div class="actions">
-                <button id="add-printer-btn" class="btn primary">Add Printer</button>
+                <button id="add-printer-btn" class="btn primary">+ Add Printer</button>
             </div>
         </header>
 
@@ -29,7 +33,7 @@
                     <h2>Job Queue</h2>
                     <form id="upload-form" class="upload-form">
                         <label for="file-upload" class="btn secondary upload-btn">
-                            Upload Print File
+                            ↑ Upload Print File
                             <input type="file" id="file-upload" accept=".3mf,.gcode" style="display:none;">
                         </label>
                     </form>
@@ -42,6 +46,7 @@
                                 <th>Filename</th>
                                 <th>Printer</th>
                                 <th>Progress</th>
+                                <th>Time Left</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -57,7 +62,7 @@
     <!-- Add Printer Modal -->
     <div id="add-printer-modal" class="modal">
         <div class="modal-content glass-panel">
-            <span class="close-btn">&times;</span>
+            <span class="close-btn" id="close-printer-modal">&times;</span>
             <h2>Add New Printer</h2>
             <form id="add-printer-form">
                 <div class="form-group">
@@ -76,11 +81,59 @@
                     <label>Access Code</label>
                     <input type="text" id="p-code" required>
                 </div>
-                <button type="submit" class="btn primary">Add</button>
+                <button type="submit" class="btn primary" style="width:100%">Add Printer</button>
             </form>
         </div>
     </div>
 
-    <script src="/static/app.js"></script>
+    <!-- Camera Modal -->
+    <div id="camera-modal" class="modal">
+        <div class="modal-content camera-modal-content glass-panel">
+            <div class="camera-modal-header">
+                <div>
+                    <h2 id="camera-modal-title">Camera</h2>
+                    <span id="camera-printer-serial" class="camera-serial"></span>
+                </div>
+                <span class="close-btn" id="close-camera-modal">&times;</span>
+            </div>
+
+            <div class="camera-container">
+                <div class="camera-live-badge">
+                    <span class="live-dot"></span> LIVE
+                </div>
+                <!-- src is set dynamically; clearing src stops the stream -->
+                <img id="camera-stream" class="camera-feed" src="" alt="Camera stream" />
+                <div id="camera-error" class="camera-error" style="display:none">
+                    <div class="camera-error-icon">📷</div>
+                    <p>Cannot connect to camera</p>
+                    <small>Make sure the printer is online and the camera is enabled</small>
+                </div>
+            </div>
+
+            <div class="camera-actions">
+                <button id="snapshot-btn" class="btn secondary">📸 Save Snapshot</button>
+                <button id="camera-refresh-btn" class="btn secondary">↺ Reconnect</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Printer Info Modal -->
+    <div id="info-modal" class="modal">
+        <div class="modal-content info-modal-content glass-panel">
+            <div class="info-modal-header">
+                <div>
+                    <h2 id="info-modal-title">Printer Info</h2>
+                    <span id="info-modal-model" class="info-model-label"></span>
+                </div>
+                <span class="close-btn" id="close-info-modal">&times;</span>
+            </div>
+            <div id="info-modal-body" class="info-body">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/app.js?v=9"></script>
 </body>
+
 </html>

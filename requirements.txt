@@ -1,6 +1,6 @@
 fastapi
 uvicorn
-paho-mqtt
+bambu-connect
 sqlalchemy
 python-multipart
 jinja2

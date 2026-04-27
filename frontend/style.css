@@ -65,10 +65,13 @@ header h1 span {
     border: none;
     border-radius: 8px;
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     cursor: pointer;
     transition: all 0.2s ease;
     font-family: 'Inter', sans-serif;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
 }
 
 .btn.primary {
@@ -83,13 +86,19 @@ header h1 span {
 }
 
 .btn.secondary {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.08);
     color: white;
     border: 1px solid var(--panel-border);
 }
 
 .btn.secondary:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.btn.disabled,
+.btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
 }
 
 /* Dashboard Sections */
@@ -108,6 +117,11 @@ header h1 span {
     font-size: 1.4rem;
     font-weight: 600;
     color: var(--text-primary);
+    margin-bottom: 1.5rem;
+}
+
+.jobs-section .section-header h2 {
+    margin-bottom: 0;
 }
 
 /* Printers Grid */
@@ -146,17 +160,22 @@ header h1 span {
 .status-badge {
     padding: 0.3rem 0.8rem;
     border-radius: 20px;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    white-space: nowrap;
 }
 
-.status-READY { background: var(--success); color: #fff; }
-.status-PRINTING { background: var(--accent-color); color: #fff; animation: pulse 2s infinite; }
-.status-WAITING_CLEAN { background: var(--warning); color: #000; animation: flash 1.5s infinite; }
-.status-ERROR { background: var(--danger); color: #fff; }
-.status-OFFLINE { background: var(--idle); color: #fff; }
+.status-READY          { background: var(--success);       color: #fff; }
+.status-PRINTING       { background: var(--accent-color);  color: #fff; animation: pulse 2s infinite; }
+.status-WAITING_CLEAN  { background: var(--warning);       color: #000; animation: flash 1.5s infinite; }
+.status-ERROR          { background: var(--danger);        color: #fff; }
+.status-OFFLINE        { background: var(--idle);          color: #fff; }
+.status-QUEUED         { background: var(--idle);          color: #fff; }
+.status-COMPLETED      { background: var(--success);       color: #fff; }
+.status-FAILED         { background: var(--danger);        color: #fff; }
+.status-UPLOADING      { background: #06b6d4;              color: #fff; animation: pulse 2s infinite; }
 
 .printer-details {
     display: flex;
@@ -171,6 +190,12 @@ header h1 span {
     color: var(--text-secondary);
 }
 
+.serial-text {
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
 .progress-container {
     width: 100%;
     height: 8px;
@@ -182,9 +207,25 @@ header h1 span {
 
 .progress-bar {
     height: 100%;
-    background: var(--accent-color);
+    background: linear-gradient(90deg, var(--accent-color), #60a5fa);
     width: 0%;
     transition: width 0.5s ease;
+}
+
+/* Printer card footer actions */
+.printer-card-actions {
+    margin-top: auto;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--panel-border);
+    display: flex;
+    gap: 0.5rem;
+}
+
+.camera-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    flex: 1;
+    justify-content: center;
 }
 
 /* Jobs Table */
@@ -193,7 +234,8 @@ header h1 span {
     border-collapse: collapse;
 }
 
-.jobs-table th, .jobs-table td {
+.jobs-table th,
+.jobs-table td {
     padding: 1rem 1.5rem;
     text-align: left;
     border-bottom: 1px solid var(--panel-border);
@@ -203,7 +245,7 @@ header h1 span {
     font-weight: 600;
     color: var(--text-secondary);
     text-transform: uppercase;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     letter-spacing: 1px;
 }
 
@@ -211,7 +253,7 @@ header h1 span {
     border-bottom: none;
 }
 
-/* Modal */
+/* Modal (shared) */
 .modal {
     display: none;
     position: fixed;
@@ -220,8 +262,8 @@ header h1 span {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(5px);
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(6px);
     align-items: center;
     justify-content: center;
 }
@@ -233,7 +275,7 @@ header h1 span {
 .modal-content {
     padding: 2rem;
     width: 100%;
-    max-width: 400px;
+    max-width: 420px;
     position: relative;
     animation: slideUp 0.3s ease;
 }
@@ -242,21 +284,28 @@ header h1 span {
     position: absolute;
     top: 1rem;
     right: 1.5rem;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     cursor: pointer;
     color: var(--text-secondary);
+    line-height: 1;
+    transition: color 0.2s;
+}
+
+.close-btn:hover {
+    color: var(--text-primary);
 }
 
 .form-group {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
 
 .form-group label {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: var(--text-secondary);
+    font-weight: 500;
 }
 
 .form-group input {
@@ -266,27 +315,428 @@ header h1 span {
     background: rgba(0, 0, 0, 0.2);
     color: white;
     font-family: inherit;
+    font-size: 0.95rem;
     outline: none;
+    transition: border-color 0.2s;
 }
 
 .form-group input:focus {
     border-color: var(--accent-color);
 }
 
-/* Animations */
+/* ------------------------------------------------------------------ */
+/* Camera Modal                                                        */
+/* ------------------------------------------------------------------ */
+.camera-modal-content {
+    max-width: 780px;
+    padding: 1.75rem;
+}
+
+.camera-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.25rem;
+}
+
+.camera-modal-header h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+}
+
+.camera-serial {
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.camera-container {
+    position: relative;
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.camera-feed {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+/* LIVE badge */
+.camera-live-badge {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    background: rgba(239, 68, 68, 0.85);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    z-index: 2;
+    backdrop-filter: blur(4px);
+}
+
+.live-dot {
+    width: 7px;
+    height: 7px;
+    background: #fff;
+    border-radius: 50%;
+    animation: livePulse 1.2s ease-in-out infinite;
+}
+
+/* Camera error state */
+.camera-error {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: var(--text-secondary);
+    background: rgba(0, 0, 0, 0.7);
+    padding: 2rem;
+    text-align: center;
+}
+
+.camera-error-icon {
+    font-size: 3rem;
+    opacity: 0.5;
+}
+
+.camera-error p {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.camera-error small {
+    font-size: 0.8rem;
+}
+
+/* Camera action buttons */
+.camera-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    justify-content: flex-end;
+}
+
+/* ------------------------------------------------------------------ */
+/* Print Info (live telemetry inside printer cards)                     */
+/* ------------------------------------------------------------------ */
+.print-info {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.time-remaining {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.time-remaining .time-icon {
+    font-size: 1.2rem;
+    filter: drop-shadow(0 0 4px rgba(59, 130, 246, 0.5));
+}
+
+.time-remaining .time-value {
+    color: #60a5fa;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.5px;
+}
+
+.time-remaining .time-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    font-weight: 400;
+    margin-left: auto;
+}
+
+.print-state-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 0.2rem 0.55rem;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-secondary);
+}
+
+.print-state-badge.state-RUNNING { color: #60a5fa; }
+.print-state-badge.state-PAUSE   { color: var(--warning); }
+.print-state-badge.state-FINISH  { color: var(--success); }
+.print-state-badge.state-FAILED  { color: var(--danger); }
+.print-state-badge.state-PREPARE { color: #a78bfa; }
+
+.stage-info {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    background: rgba(255,255,255, 0.04);
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-weight: 500;
+}
+
+.temp-row {
+    display: flex;
+    gap: 0.6rem;
+}
+
+.temp-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 8px;
+    padding: 0.4rem 0.25rem;
+}
+
+.temp-item .temp-label {
+    font-size: 0.65rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.temp-item .temp-value {
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-primary);
+}
+
+.temp-item .temp-value.hot {
+    color: #f97316;
+}
+
+.layer-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.layer-info .layer-count {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+.wifi-signal {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+/* ETA estimation line */
+.eta-line {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.eta-line .eta-value {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* ------------------------------------------------------------------ */
+/* Printer Info Modal                                                  */
+/* ------------------------------------------------------------------ */
+.info-modal-content {
+    max-width: 600px;
+    padding: 1.75rem;
+}
+
+.info-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.25rem;
+}
+
+.info-modal-header h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+}
+
+.info-model-label {
+    font-size: 0.9rem;
+    color: #60a5fa;
+    font-weight: 600;
+}
+
+.info-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-height: 70vh;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+.info-section-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-secondary);
+    margin-bottom: -0.4rem;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 0.6rem;
+}
+
+.info-card {
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 10px;
+    padding: 0.65rem 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.info-card .info-label {
+    font-size: 0.65rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.info-card .info-value {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+    word-break: break-all;
+}
+
+.info-card .info-value.small {
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.info-card .info-value.accent {
+    color: #60a5fa;
+}
+
+/* AMS Tray list */
+.ams-tray-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.ams-tray-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+}
+
+.ams-color-swatch {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    flex-shrink: 0;
+}
+
+.ams-tray-name {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.ams-tray-meta {
+    margin-left: auto;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+/* Info button in printer card */
+.info-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    flex: 1;
+    justify-content: center;
+}
+
+/* Ready button in printer card */
+.ready-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    flex: 1;
+    justify-content: center;
+    background: rgba(16, 185, 129, 0.2);
+    color: var(--success);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+.ready-btn:hover {
+    background: rgba(16, 185, 129, 0.3);
+}
+
+/* ------------------------------------------------------------------ */
+/* Animations                                                          */
+/* ------------------------------------------------------------------ */
 @keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.7; }
+    0%   { opacity: 1; }
+    50%  { opacity: 0.7; }
     100% { opacity: 1; }
 }
 
 @keyframes flash {
-    0% { opacity: 1; background: var(--warning); }
-    50% { opacity: 0.8; background: #fff; }
+    0%   { opacity: 1; background: var(--warning); }
+    50%  { opacity: 0.8; background: #fff; }
     100% { opacity: 1; background: var(--warning); }
 }
 
 @keyframes slideUp {
     from { transform: translateY(20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+    to   { transform: translateY(0);    opacity: 1; }
+}
+
+@keyframes livePulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.4; transform: scale(0.8); }
 }

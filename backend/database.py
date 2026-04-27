@@ -19,6 +19,7 @@ class PrinterStatus(str, enum.Enum):
 
 class JobStatus(str, enum.Enum):
     QUEUED = "QUEUED"
+    UPLOADING = "UPLOADING"
     PRINTING = "PRINTING"
     COMPLETED = "COMPLETED"
     FAILED = "FAILED"
@@ -33,6 +34,11 @@ class Printer(Base):
     access_code = Column(String)
     status = Column(Enum(PrinterStatus), default=PrinterStatus.OFFLINE)
     current_job_id = Column(Integer, ForeignKey("jobs.id"), nullable=True)
+    # Hardware info (populated from MQTT)
+    model = Column(String, nullable=True)
+    firmware_version = Column(String, nullable=True)
+    ams_installed = Column(Boolean, default=False)
+    nozzle_diameter = Column(String, nullable=True)  # e.g. "0.4"
 
 class Job(Base):
     __tablename__ = "jobs"
