@@ -1,5 +1,7 @@
 :root {
     --bg-color: #0f172a;
+    --bg-gradient-start: #0f172a;
+    --bg-gradient-end: #1e1b4b;
     --panel-bg: rgba(30, 41, 59, 0.7);
     --panel-border: rgba(255, 255, 255, 0.1);
     --text-primary: #f8fafc;
@@ -11,6 +13,30 @@
     --danger: #ef4444;
     --idle: #64748b;
     --glass-blur: blur(12px);
+    --input-bg: rgba(0, 0, 0, 0.2);
+    --input-color: white;
+    --print-info-bg: rgba(0, 0, 0, 0.2);
+    --card-inner-bg: rgba(255, 255, 255, 0.04);
+}
+
+[data-theme="light"] {
+    --bg-color: #f0f4ff;
+    --bg-gradient-start: #e8eeff;
+    --bg-gradient-end: #dde6ff;
+    --panel-bg: rgba(255, 255, 255, 0.75);
+    --panel-border: rgba(59, 130, 246, 0.15);
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --accent-color: #2563eb;
+    --accent-hover: #1d4ed8;
+    --success: #059669;
+    --warning: #d97706;
+    --danger: #dc2626;
+    --idle: #94a3b8;
+    --input-bg: rgba(255, 255, 255, 0.8);
+    --input-color: #1e293b;
+    --print-info-bg: rgba(59, 130, 246, 0.05);
+    --card-inner-bg: rgba(59, 130, 246, 0.05);
 }
 
 * {
@@ -21,10 +47,11 @@
 
 body {
     font-family: 'Inter', sans-serif;
-    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+    background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
     color: var(--text-primary);
     min-height: 100vh;
     padding: 2rem;
+    transition: background 0.4s ease, color 0.4s ease;
 }
 
 .app-container {
@@ -87,12 +114,20 @@ header h1 span {
 
 .btn.secondary {
     background: rgba(255, 255, 255, 0.08);
-    color: white;
+    color: var(--text-primary);
     border: 1px solid var(--panel-border);
+}
+
+[data-theme="light"] .btn.secondary {
+    background: rgba(59, 130, 246, 0.08);
 }
 
 .btn.secondary:hover {
     background: rgba(255, 255, 255, 0.15);
+}
+
+[data-theme="light"] .btn.secondary:hover {
+    background: rgba(59, 130, 246, 0.15);
 }
 
 .btn.disabled,
@@ -312,12 +347,12 @@ header h1 span {
     padding: 0.8rem;
     border-radius: 8px;
     border: 1px solid var(--panel-border);
-    background: rgba(0, 0, 0, 0.2);
-    color: white;
+    background: var(--input-bg);
+    color: var(--input-color);
     font-family: inherit;
     font-size: 0.95rem;
     outline: none;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, background 0.3s;
 }
 
 .form-group input:focus {
@@ -437,7 +472,7 @@ header h1 span {
 /* Print Info (live telemetry inside printer cards)                     */
 /* ------------------------------------------------------------------ */
 .print-info {
-    background: rgba(0, 0, 0, 0.2);
+    background: var(--print-info-bg);
     border-radius: 10px;
     padding: 0.85rem 1rem;
     display: flex;
@@ -515,7 +550,7 @@ header h1 span {
     flex-direction: column;
     align-items: center;
     gap: 0.15rem;
-    background: rgba(255, 255, 255, 0.04);
+    background: var(--card-inner-bg);
     border-radius: 8px;
     padding: 0.4rem 0.25rem;
 }
@@ -626,7 +661,7 @@ header h1 span {
 }
 
 .info-card {
-    background: rgba(255, 255, 255, 0.04);
+    background: var(--card-inner-bg);
     border-radius: 10px;
     padding: 0.65rem 0.8rem;
     display: flex;
@@ -669,7 +704,7 @@ header h1 span {
     display: flex;
     align-items: center;
     gap: 0.6rem;
-    background: rgba(255, 255, 255, 0.04);
+    background: var(--card-inner-bg);
     border-radius: 8px;
     padding: 0.5rem 0.75rem;
     font-size: 0.85rem;
@@ -715,6 +750,46 @@ header h1 span {
 .ready-btn:hover {
     background: rgba(16, 185, 129, 0.3);
 }
+
+/* ------------------------------------------------------------------ */
+/* Theme Toggle Button                                                 */
+/* ------------------------------------------------------------------ */
+.theme-toggle {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--panel-border);
+    background: var(--panel-bg);
+    backdrop-filter: var(--glass-blur);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.theme-toggle:hover {
+    transform: rotate(20deg) scale(1.1);
+    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+    border-color: var(--accent-color);
+}
+
+.theme-toggle .icon-moon,
+.theme-toggle .icon-sun {
+    position: absolute;
+    transition: opacity 0.3s ease, transform 0.4s ease;
+    line-height: 1;
+}
+
+.theme-toggle .icon-moon  { opacity: 1;  transform: rotate(0deg) scale(1); }
+.theme-toggle .icon-sun   { opacity: 0;  transform: rotate(-90deg) scale(0.5); }
+
+[data-theme="light"] .theme-toggle .icon-moon { opacity: 0;  transform: rotate(90deg) scale(0.5); }
+[data-theme="light"] .theme-toggle .icon-sun  { opacity: 1;  transform: rotate(0deg) scale(1); }
 
 /* ------------------------------------------------------------------ */
 /* Animations                                                          */

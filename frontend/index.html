@@ -8,7 +8,7 @@
     <meta name="description"
         content="Centralized management dashboard for Bambu Lab 3D printer farm — monitor status, queue jobs, and watch live camera feeds.">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/style.css?v=9">
+    <link rel="stylesheet" href="/static/style.css?v=10">
 </head>
 
 <body>
@@ -16,6 +16,10 @@
         <header class="glass-panel">
             <h1>Bambu Farm <span>Manager</span></h1>
             <div class="actions">
+                <button id="theme-toggle-btn" class="theme-toggle" title="Toggle theme" aria-label="Toggle light/dark theme">
+                    <span class="icon-moon">🌙</span>
+                    <span class="icon-sun">☀️</span>
+                </button>
                 <button id="add-printer-btn" class="btn primary">+ Add Printer</button>
             </div>
         </header>
@@ -133,7 +137,7 @@
         </div>
     </div>
 
-    <script src="/static/app.js?v=9"></script>
+    <script src="/static/app.js?v=10"></script>
 </body>
 
 </html>

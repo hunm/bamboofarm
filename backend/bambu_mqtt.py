@@ -442,7 +442,7 @@ class BambuClient:
 
             elif state == "FINISH":
                 # If we manually set READY from the UI, ignore the persistent FINISH broadcast
-                if current_status not in (PrinterStatus.READY, PrinterStatus.OFFLINE):
+                if current_status not in (PrinterStatus.READY, PrinterStatus.READY.value, "READY", PrinterStatus.OFFLINE, PrinterStatus.OFFLINE.value, "OFFLINE"):
                     new_status = PrinterStatus.WAITING_CLEAN
                     self._complete_current_job(db, printer)
 
@@ -491,7 +491,7 @@ class BambuClient:
                         job.progress = progress
                         db.commit()
                     # Auto-complete when progress reaches 100%
-                    if progress >= 100 and job.status == JobStatus.PRINTING:
+                    if progress >= 100 and job.status in (JobStatus.PRINTING, JobStatus.PRINTING.value, "PRINTING"):
                         logger.info(
                             f"Job {job.id} reached 100% — marking COMPLETED"
                         )

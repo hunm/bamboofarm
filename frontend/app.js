@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const closePrinterModal = document.getElementById('close-printer-modal');
     const addPrinterForm = document.getElementById('add-printer-form');
     const fileUpload = document.getElementById('file-upload');
+    const themeToggleBtn = document.getElementById('theme-toggle-btn');
 
     // Camera modal refs
     const cameraModal = document.getElementById('camera-modal');
@@ -30,6 +31,26 @@ document.addEventListener('DOMContentLoaded', () => {
     let activePrinterId = null;
     let activePrinterName = '';
     let activePrinterSerial = '';
+
+    // ----------------------------------------------------------------
+    // Theme Toggle
+    // ----------------------------------------------------------------
+    const savedTheme = localStorage.getItem('bambu-theme') || 'dark';
+    if (savedTheme === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+    }
+
+    themeToggleBtn.addEventListener('click', () => {
+        const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+        if (isLight) {
+            document.documentElement.removeAttribute('data-theme');
+            localStorage.setItem('bambu-theme', 'dark');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+            localStorage.setItem('bambu-theme', 'light');
+        }
+    });
+
 
     // ----------------------------------------------------------------
     // Data fetch & render
